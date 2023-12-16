@@ -15,16 +15,17 @@ class Pieces:
     white_bishop = pygame.image.load("pieces\\white_bishop.png")
     white_king = pygame.image.load("pieces\\white_king.png")
     white_queen = pygame.image.load("pieces\\white_queen.png")
+    white_field = pygame.image.load("pieces\\white_field.png")
+    blue_field = pygame.image.load("pieces\\blue_field.png")
 
-    starting_chess_board_data = {"h": [white_rook, white_pawn, "0", "0", "0", "0", black_pawn, black_rook],
-                                 "g": [white_knight, white_pawn, "0", "0", "0", "0", black_pawn, black_knight],
-                                 "f": [white_bishop, white_pawn, "0", "0", "0", "0", black_pawn, black_bishop],
-                                 "e": [white_king, white_pawn, "0", "0", "0", "0", black_pawn, black_king],
-                                 "d": [white_queen, white_pawn, "0", "0", "0", "0", black_pawn, black_queen],
-                                 "c": [white_bishop, white_pawn, "0", "0", "0", "0", black_pawn, black_bishop],
-                                 "b": [white_knight, white_pawn, "0", "0", "0", "0", black_pawn, black_knight],
-                                 "a": [white_rook, white_pawn, "0", "0", "0", "0", black_pawn, black_rook]}
-    df = pandas.DataFrame(starting_chess_board_data)
+    starting_chess_board_data = {0: [white_rook, white_pawn, "0", "0", "0", "0", black_pawn, black_rook],
+                                 1: [white_knight, white_pawn, "0", "0", "0", "0", black_pawn, black_knight],
+                                 2: [white_bishop, white_pawn, "0", "0", "0", "0", black_pawn, black_bishop],
+                                 3: [white_king, white_pawn, "0", "0", "0", "0", black_pawn, black_king],
+                                 4: [white_queen, white_pawn, "0", "0", "0", "0", black_pawn, black_queen],
+                                 5: [white_bishop, white_pawn, "0", "0", "0", "0", black_pawn, black_bishop],
+                                 6: [white_knight, white_pawn, "0", "0", "0", "0", black_pawn, black_knight],
+                                 7: [white_rook, white_pawn, "0", "0", "0", "0", black_pawn, black_rook]}
 
     def pieces_draw(self, screen):
         for i in range(8):
