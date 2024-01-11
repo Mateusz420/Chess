@@ -297,7 +297,14 @@ while running:
                 field_coords = [field_x_coord, field_y_coord]
                 print(f"field cords {field_coords}")
                 piece_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
+                pieces.pieces_location(df, TURN, piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)  
         
     screen.blit(chess_board, (0, 0))
     pieces.pieces_draw(screen)
     pygame.display.update()
+            
+                
+                
+            
+            
+            

@@ -52,3 +52,20 @@ class Pieces:
         screen.blit(self.black_queen, self.black[1][3])
         screen.blit(self.black_king, self.black[1][4])
 
+    def pieces_location(self, df, TURN, piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
+        for i in range(2):
+            for j in range(8):
+                # if (piece_y_coord * 105, piece_x_coord * 105) == self.white[i][j] and df.at[field_x_coord, field_y_coord] != "0" and (field_y_coord * 105, field_x_coord * 105) not in self.black[0] and (field_y_coord * 105, field_x_coord * 105) not in self.black[1]:
+                    # x = self.black[0].index(field_y_coord * 105, field_x_coord * 105)
+                    # y = self.black[1].index(field_y_coord * 105, field_x_coord * 105)
+                    # self.black[x][y] = (1000,1000)
+                    # self.white[i][j] = (field_y_coord * 105, field_x_coord * 105)
+                if (piece_y_coord * 105, piece_x_coord * 105) == self.white[i][j] and df.at[field_x_coord, field_y_coord] != "0" and (field_y_coord * 105, field_x_coord * 105) not in self.white[0] and (field_y_coord * 105, field_x_coord * 105) not in self.white[1]:
+                    self.white[i][j] = (field_y_coord * 105, field_x_coord * 105)
+      
+        for i in range(2):
+            for j in range(8):
+                if (piece_y_coord * 105, piece_x_coord * 105) == self.black[i][j] and df.at[field_x_coord, field_y_coord] != "0" and (field_y_coord * 105, field_x_coord * 105) not in self.black[0] and (field_y_coord * 105, field_x_coord * 105) not in self.black[1]:
+                    self.black[i][j] = (field_y_coord * 105, field_x_coord * 105)
+
+                
