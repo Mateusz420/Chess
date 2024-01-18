@@ -3,18 +3,18 @@ import pygame
 
 
 class Pieces:
-    black_pawn = pygame.image.load("chess\\pieces\\black_pawn.png")
-    black_rook = pygame.image.load("chess\\pieces\\black_rook.png")
-    black_knight = pygame.image.load("chess\\pieces\\black_knight.png")
-    black_bishop = pygame.image.load("chess\\pieces\\black_bishop.png")
-    black_king = pygame.image.load("chess\\pieces\\black_king.png")
-    black_queen = pygame.image.load("chess\\pieces\\black_queen.png")
-    white_pawn = pygame.image.load("chess\\pieces\\white_pawn.png")
-    white_rook = pygame.image.load("chess\\pieces\\white_rook.png")
-    white_knight = pygame.image.load("chess\\pieces\\white_knight.png")
-    white_bishop = pygame.image.load("chess\\pieces\\white_bishop.png")
-    white_king = pygame.image.load("chess\\pieces\\white_king.png")
-    white_queen = pygame.image.load("chess\\pieces\\white_queen.png")
+    black_pawn = pygame.image.load("pieces\\black_pawn.png")
+    black_rook = pygame.image.load("pieces\\black_rook.png")
+    black_knight = pygame.image.load("pieces\\black_knight.png")
+    black_bishop = pygame.image.load("pieces\\black_bishop.png")
+    black_king = pygame.image.load("pieces\\black_king.png")
+    black_queen = pygame.image.load("pieces\\black_queen.png")
+    white_pawn = pygame.image.load("pieces\\white_pawn.png")
+    white_rook = pygame.image.load("pieces\\white_rook.png")
+    white_knight = pygame.image.load("pieces\\white_knight.png")
+    white_bishop = pygame.image.load("pieces\\white_bishop.png")
+    white_king = pygame.image.load("pieces\\white_king.png")
+    white_queen = pygame.image.load("pieces\\white_queen.png")
     
     white = [[(0, 630), (105, 630), (210, 630), (315, 630), (420, 630), (525, 630), (630, 630), (735, 630)],
              [(0, 735), (105, 735), (210, 735), (315, 735), (420, 735), (525, 735), (630, 735), (735, 735)]]
@@ -30,6 +30,15 @@ class Pieces:
                                  6: [black_knight, black_pawn, "0", "0", "0", "0", white_pawn, white_knight],
                                  7: [black_rook, black_pawn, "0", "0", "0", "0", white_pawn, white_rook]}
 
+    move_chess_board_data =    {0: ["0", "0", "0", "0", "0", "0", "0", "0"],
+                                1: ["0", "0", "0", "0", "0", "0", "0", "0"],
+                                2: ["0", "0", "0", "0", "0", "0", "0", "0"],
+                                3: ["0", "0", "0", "0", "0", "0", "0", "0"],
+                                4: ["0", "0", "0", "0", "0", "0", "0", "0"],
+                                5: ["0", "0", "0", "0", "0", "0", "0", "0"],
+                                6: ["0", "0", "0", "0", "0", "0", "0", "0"],
+                                7: ["0", "0", "0", "0", "0", "0", "0", "0"]}
+    
     def pieces_draw(self, screen):
         for i in range(8):
             screen.blit(self.white_pawn, self.white[0][i])
