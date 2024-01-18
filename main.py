@@ -7,7 +7,7 @@ clock = pygame.time.Clock()
 
 # Setting up the screen
 screen = pygame.display.set_mode((840, 840))
-chess_board = pygame.image.load("chess\\chess_board.png")
+chess_board = pygame.image.load("chess_board.png")
 
 # Splitting the chess board into squares
 board_x = 0
@@ -39,7 +39,7 @@ for i in range(len(all_tiles)):
 for i in tiles:
     print(i)
 
-icon = pygame.image.load("chess\\pieces\\black_pawn.png")
+icon = pygame.image.load("pieces\\black_pawn.png")
 pygame.display.set_caption("Chess")
 pygame.display.set_icon(icon)
 
@@ -81,6 +81,9 @@ def piece_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
         print("knight")
         knight_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
     
+    elif (selected_piece == pieces_class.Pieces().white_rook or selected_piece == pieces_class.Pieces().black_rook):
+        print("rook")
+        rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
     # elif (selected_piece == "0"):
     #     print("0")
     #     MOVE = "SELECT_PIECE"
@@ -268,9 +271,176 @@ def knight_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     else:
         MOVE="SELECT_PIECE"
 
-    
 
+
+def rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
+    global MOVE
+    global TURN
+
+    MOVE = "SELECT_PIECE"
+    rook_color = TURN + "_rook"
+
+    if TURN == "white":
+        next_turn = "black"
+    elif TURN == "black":
+        next_turn = "white"
+
+
+    print("rook")
+    if df.at[piece_x_coord, piece_y_coord] == getattr(pieces_class.Pieces(), rook_color):
+        if (TURN == "white" and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[1]) or (
+            TURN == "black" and  (field_y_coord * 105, field_x_coord * 105) not in pieces.black[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.black[1]):
+            for i in range(4):
+                print("i in range 4")
+                next_move = True
+                calculated_x = 0
+                calculated_y = 0
+                x_variable = 1
+                y_variable = 1
+                x = 0
+                y = 0
+                if i == 0:  # prawo
+                    print("i0")
+                    x = 0
+                    y = 1
+                    y_variable = 1
+                    xy= "y"
+                elif i == 1:  # lewo
+                    print("i1")
+                    x = 0
+                    y = -1
+                    y_variable = -1
+                    xy = "y"
+                elif i == 2:  # dół
+                    print("i2")
+                    x = 1
+                    y = 0
+                    x_variable = 1
+                    xy = "x"
+                elif i == 3:
+                    print("i3")  # góra
+                    x = -1
+                    y = 0
+                    x_variable = -1
+                    xy = "x"
+                print("path")
+                calculated_x = piece_x_coord + x
+                calculated_y = piece_y_coord + y
+
+                print(calculated_x)
+                print(calculated_y)
+                if calculated_y in range(0, 8) and calculated_x in range(0, 8):
+                    if df.at[calculated_x, calculated_y] == "0":
+                        print("movelist")
+
+                        while next_move:
+                            # print("while")
+                            if y!=0:
+                                print("y!=0")
+                                if (calculated_y + y_variable) in range(0,8):
+                                    print("www")
+                                    if df.at[
+                                        calculated_x, calculated_y + y_variable] == "0" and calculated_y + y_variable in range(
+                                            0, 8):  ###to kurwa jakos zmienic
+                                        mf.at[calculated_x, calculated_y] = "1"
+                                        mf.at[calculated_x, calculated_y + y_variable] = "1"
+                                        print("movelist0x")
+                                        print(mf)
+                                        
+                                        if (calculated_y + y_variable) > piece_y_coord:
+                                            y_variable+=1
+                                        else:
+                                            y_variable -= 1
+                                        if (calculated_y + y_variable) not in range(0, 8):
+                                            next_move = False
+                                            print("www1xx")
+                                            calculated_x = 0
+                                            calculated_y = 0
+                                            break
+
+                                    
+                                #bez y variable
+                                elif df.at[
+                                    calculated_x, calculated_y] == "0" and calculated_y in range(0, 8):
+                                    mf.at[calculated_x, calculated_y] = "1"
+                                    print("movelist0x")
+                                    print(mf)
+
+                                    if (calculated_y + y_variable) > piece_y_coord:
+                                        y_variable+=1
+                                    else:
+                                        y_variable -= 1
+                                    if (calculated_y + y_variable) not in range(0, 8):
+                                        next_move = False
+                                        print("www123")
+                                        calculated_x = 0
+                                        calculated_y = 0
+                                        break
+                                    break
+
+                            elif x!=0: 
+                                print("x!=0")
+                                if (calculated_x + x_variable) in range(0,8):  
+                                    # print("hhhhhhhhh")      
+                                    if df.at[calculated_x + x_variable, calculated_y] == "0":
+                                        mf.at[calculated_x, calculated_y] = "1"
+                                        mf.at[calculated_x + x_variable, calculated_y] = "1"
+                                        print("movelist1x")
+                                        print(mf)
+
+                                        if (calculated_x + x_variable) > piece_x_coord:
+                                            x_variable+=1
+                                        else:
+                                            x_variable -= 1
+                                        if (calculated_x + x_variable) not in range(0, 8):
+                                            next_move = False
+                                            print("www2")
+                                            calculated_x = 0
+                                            calculated_y = 0
+                                            break
+                                    
+                                        
+                                    #bez x variable
+                                    elif df.at[
+                                        calculated_x, calculated_y] == "0" and calculated_x in range(0, 8):
+                                        print("mmmmmmmm")
+                                        mf.at[calculated_x, calculated_y] = "1"
+                                        print("movelist0x")
+                                        print(mf)
+
+                                        if (calculated_x + x_variable) > piece_x_coord:
+                                            x_variable+=1
+                                        else:
+                                            x_variable -= 1
+                                        if (calculated_x + x_variable) not in range(0, 8):
+                                            print("www156")
+                                            calculated_x = 0
+                                            calculated_y = 0
+                                            break    
+                                        break
+
+                        print(mf)
+                        print("movelist2")
+                    else:
+                        print("movelist3")
+                        print(mf)
+
+                print(" NIE DZIALA if calculated_y in range(0, 8) and calculated_x in range(0, 8):")
+                if i==3:
+                    print(mf)
+                    if mf.at[field_x_coord,field_y_coord] == "1":
+                        df.at[field_x_coord,field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                        df.at[piece_x_coord, piece_y_coord] = "0"
+                        print("rooki")
+                        print(mf)
+                        print(df)
+                        MOVE="SELECT_PIECE"
+                        TURN = next_turn
+
+    
+    
 df = pandas.DataFrame(pieces_class.Pieces().starting_chess_board_data)
+mf = pandas.DataFrame(pieces_class.Pieces().move_chess_board_data)
 print("wybierz figure")
 print(df)
 
