@@ -73,10 +73,11 @@ def piece_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     if (selected_piece == pieces_class.Pieces().white_pawn):
         print("white_pawn")
         white_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
+        
     elif (selected_piece == pieces_class.Pieces().black_pawn):
-            print("black_pawn")
-            black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
-            
+        print("black_pawn")
+        black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
+        
     elif (selected_piece == pieces_class.Pieces().white_knight or selected_piece == pieces_class.Pieces().black_knight):
         print("knight")
         knight_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
@@ -124,12 +125,13 @@ def white_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                 TURN="black"
             #ruch o 2 pola
             elif piece_y_coord == field_y_coord and piece_x_coord == 6 and field_x_coord == 4:
-                print("white_pawn_rucho2")
-                df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().white_pawn
-                df.at[piece_x_coord, piece_y_coord] = "0"
-                print(df)
-                MOVE="SELECT_PIECE"
-                TURN="black"
+                if df.at[piece_x_coord - 1, piece_y_coord] == "0":
+                    print("white_pawn_rucho2")
+                    df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().white_pawn
+                    df.at[piece_x_coord, piece_y_coord] = "0"
+                    print(df)
+                    MOVE="SELECT_PIECE"
+                    TURN="black"
                 
             #ruch o 1 pole
             elif piece_y_coord == field_y_coord and piece_x_coord - field_x_coord == 1:
@@ -171,12 +173,13 @@ def black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                 
             #ruch o 2 pola
             elif piece_y_coord == field_y_coord and piece_x_coord == 1 and field_x_coord == 3:
-                print("black_pawn_rucho2")
-                df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().black_pawn
-                df.at[piece_x_coord, piece_y_coord] = "0"
-                print(df)
-                MOVE="SELECT_PIECE"
-                TURN="white"
+                if df.at[piece_x_coord + 1, piece_y_coord] == "0":
+                    print("black_pawn_rucho2")
+                    df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().black_pawn
+                    df.at[piece_x_coord, piece_y_coord] = "0"
+                    print(df)
+                    MOVE="SELECT_PIECE"
+                    TURN="white"
                 
             #ruch o 1 pole
             elif piece_y_coord == field_y_coord and piece_x_coord - field_x_coord == -1:
@@ -586,8 +589,34 @@ def rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                         MOVE="SELECT_PIECE"
                         TURN = next_turn
 
+
+def winner_check(white, black):
+    running = True
+    #for i in range(8):
+        #for j in range(8):
+            #if df.at[i, j] == getattr(pieces_class.Pieces(), "white_king"):
+                #white_king_loc = df.at[i, j]
+                #break
+            #else:
+                #white_king_loc = None
     
+    #for i in range(8):
+        #for j in range(8):
+            #if df.at[i, j] == getattr(pieces_class.Pieces(), "black_king"):
+                #black_king_loc = df.at[i, j]
+                #break
+            #else:
+                #black_king_loc = None
     
+    if white[1][4] == (1000, 1000):
+        print("Black Wins!")
+        running = False
+    elif black[1][4] == (1000, 1000):
+        print("White Wins!")
+        running = False
+        
+    return running
+
 df = pandas.DataFrame(pieces_class.Pieces().starting_chess_board_data)
 mf = pandas.DataFrame(pieces_class.Pieces().move_chess_board_data)
 print("wybierz figure")
@@ -616,7 +645,8 @@ while running:
                 field_coords = [field_x_coord, field_y_coord]
                 print(f"field cords {field_coords}")
                 piece_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
-                pieces.pieces_location(df, TURN, piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)  
+                pieces.pieces_location(df, TURN, piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
+                running = winner_check(pieces.white, pieces.black)
         
     screen.blit(chess_board, (0, 0))
     pieces.pieces_draw(screen)
