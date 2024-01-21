@@ -7,7 +7,7 @@ clock = pygame.time.Clock()
 
 # Setting up the screen
 screen = pygame.display.set_mode((840, 840))
-chess_board = pygame.image.load("chess_board.png")
+chess_board = pygame.image.load("chess\\chess_board.png")
 
 # Splitting the chess board into squares
 board_x = 0
@@ -39,7 +39,7 @@ for i in range(len(all_tiles)):
 for i in tiles:
     print(i)
 
-icon = pygame.image.load("pieces\\black_pawn.png")
+icon = pygame.image.load("chess\\pieces\\black_pawn.png")
 pygame.display.set_caption("Chess")
 pygame.display.set_icon(icon)
 
@@ -80,13 +80,20 @@ def piece_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     elif (selected_piece == pieces_class.Pieces().white_knight or selected_piece == pieces_class.Pieces().black_knight):
         print("knight")
         knight_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
+        
     
     elif (selected_piece == pieces_class.Pieces().white_rook or selected_piece == pieces_class.Pieces().black_rook):
         print("rook")
         rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
+    
     # elif (selected_piece == "0"):
     #     print("0")
     #     MOVE = "SELECT_PIECE"
+        
+    elif (selected_piece == pieces_class.Pieces().white_king or selected_piece == pieces_class.Pieces().black_king):
+        print("knight")
+        king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
+    
     
     else:
         print("0")
@@ -271,7 +278,28 @@ def knight_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     else:
         MOVE="SELECT_PIECE"
 
-
+def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
+    global MOVE
+    global TURN
+    MOVE="SELECT_PIECE"
+    king_color = TURN+"_king"
+    
+    if TURN == "white":
+        next_turn = "black"
+    elif TURN == "black":
+        next_turn = "white"
+    
+    print("king_move")
+    print(king_color)
+    if df.at[piece_x_coord, piece_y_coord] == getattr(pieces_class.Pieces(), king_color):
+        if (TURN == "white" and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[1]) or (
+            TURN == "black" and  (field_y_coord * 105, field_x_coord * 105) not in pieces.black[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.black[1]):
+            if (piece_x_coord - field_x_coord == 1 or piece_x_coord - field_x_coord == -1 or piece_y_coord - field_y_coord == 1 or piece_y_coord - field_y_coord == -1) and (-1 <= piece_x_coord - field_x_coord <= 1 and -1 <= piece_y_coord - field_y_coord <= 1):
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                df.at[piece_x_coord, piece_y_coord] = "0"
+                print(df)
+                MOVE="SELECT_PIECE"
+                TURN = next_turn
 
 def rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     global MOVE
@@ -472,9 +500,3 @@ while running:
     screen.blit(chess_board, (0, 0))
     pieces.pieces_draw(screen)
     pygame.display.update()
-            
-                
-                
-            
-            
-            
