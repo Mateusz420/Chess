@@ -35,10 +35,6 @@ for i in range(len(all_tiles)):
     else:
         x_coords.append(all_tiles[i])
 
-# test
-for i in tiles:
-    print(i)
-
 icon = pygame.image.load("chess\\pieces\\black_pawn.png")
 pygame.display.set_caption("Chess")
 pygame.display.set_icon(icon)
@@ -307,288 +303,73 @@ def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
 def rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     global MOVE
     global TURN
+    MOVE="SELECT_PIECE"
+    rook_color = TURN+"_rook"
     
-    
-    mf = pandas.DataFrame(pieces_class.Pieces().move_chess_board_data)
-    mf = mf.replace("1", "0")
-    MOVE = "SELECT_PIECE"
-    rook_color = TURN + "_rook"
-
     if TURN == "white":
         next_turn = "black"
     elif TURN == "black":
         next_turn = "white"
-
-
-    print("rook")
+    
+    print("rook_move")
+    print(rook_color)
+    
+    for i in range(4):
+        if i == 0:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord + j <= 7 and df.at[piece_x_coord + j, piece_y_coord] == "0":
+                    df.at[piece_x_coord + j, piece_y_coord] = "1"
+                else:
+                    break
+        elif i == 1:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord - j <= 7 and df.at[piece_x_coord - j, piece_y_coord] == "0":
+                    df.at[piece_x_coord - j, piece_y_coord] = "1"
+                else:
+                    break
+        elif i == 2:
+            for j in range(1, 8):
+                if 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord , piece_y_coord + j] == "0":
+                    df.at[piece_x_coord, piece_y_coord + j] = "1"
+                else:
+                    break
+        elif i == 3:
+            for j in range(1, 8):
+                if 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord, piece_y_coord - j] == "0":
+                    df.at[piece_x_coord, piece_y_coord - j] = "1"
+                else:
+                    break
+           
     if df.at[piece_x_coord, piece_y_coord] == getattr(pieces_class.Pieces(), rook_color):
         if (TURN == "white" and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[1]) or (
             TURN == "black" and  (field_y_coord * 105, field_x_coord * 105) not in pieces.black[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.black[1]):
-            for i in range(4):
-                print("i in range 4")
-                next_move = True
-                calculated_x = 0
-                calculated_y = 0
-                x_variable = 1
-                y_variable = 1
-                x = 0
-                y = 0
-                if i == 0:  # prawo
-                    print("i0")
-                    x = 0
-                    y = 1
-                    y_variable = 1
-                    xy= "y"
-                elif i == 1:  # lewo
-                    print("i1")
-                    x = 0
-                    y = -1
-                    y_variable = -1
-                    xy = "y"
-                elif i == 2:  # dół
-                    print("i2")
-                    x = 1
-                    y = 0
-                    x_variable = 1
-                    xy = "x"
-                elif i == 3:
-                    print("i3")  # góra
-                    x = -1
-                    y = 0
-                    x_variable = -1
-                    xy = "x"
-                print("path")
-                calculated_x = piece_x_coord + x
-                calculated_y = piece_y_coord + y
-
-                print(calculated_x)
-                print(calculated_y)
-                if calculated_y in range(0, 8) and calculated_x in range(0, 8):
-                    if df.at[calculated_x, calculated_y] == "0" or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                        print("movelist")
-
-                        while next_move:
-                            # print("while")
-                            if y!=0:
-                                print("y!=0")
-                                
-                                if df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                    mf.at[calculated_x, calculated_y] = "1"
-                                    print("HMMMMMMMMMM")
-                                    break
-                                
-                                
-                                if (calculated_y + y_variable) in range(0,8):
-                                    print("www")
-                                    if calculated_y + y_variable in range(0, 8) and df.at[calculated_x, calculated_y + y_variable] == "0":
-
-                                        if df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                            print("princik1")
-                                        if df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn"):
-                                            print("princik1")
-                                        mf.at[calculated_x, calculated_y] = "1"
-                                        mf.at[calculated_x, calculated_y + y_variable] = "1"
-                                        print("movelist0x")
-                                        print(mf)
-                                        
-                                        if (calculated_y + y_variable) > piece_y_coord and df.at[calculated_x, calculated_y + y_variable] == "0":
-                                            y_variable+=1
-                                            print("y1")
-                                            
-                                        elif (calculated_y + y_variable) < piece_y_coord and df.at[calculated_x, calculated_y + y_variable] == "0":
-                                            y_variable -= 1
-                                            print("y1.5")
-                                        if (calculated_y + y_variable) not in range(0, 8):
-                                            
-                                            print("www1xx")
-                                            calculated_x = 0
-                                            calculated_y = 0
-                                            break
-                                        # break
-                                    # break
-                                    
-                                    elif df.at[calculated_x, calculated_y] == "0":
-                                        print("znaleziony1")
-                                        mf.at[calculated_x, calculated_y] == "9"
-                                        break
-                                    
-                                    
-                                    #bez y variable
-                                    elif calculated_y in range(0, 8) and df.at[calculated_x, calculated_y] == "0":
-                                        mf.at[calculated_x, calculated_y] = "1"
-                                        # print('HHHe muje')
-                                        print("movelist0x")
-                                        print(mf)
-                                        
-
-
-                                        if (calculated_y + y_variable) > piece_y_coord:
-                                            print("lllllllll")
-                                            if (calculated_y + y_variable) in range(0,8):
-                                                if df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                                    print("CCCC")
-                                                elif df.at[calculated_x, calculated_y + y_variable] == "0":
-                                                    print("CCCC22")
-                                                    break
-                                            y_variable+=1
-                                        elif (calculated_y + y_variable) < piece_y_coord:
-                                            print("llll")
-                                            
-                                            if (calculated_y + y_variable) in range(0,8):
-                                                if df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x, calculated_y + y_variable] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                                    print("CCCC3")
-                                                elif df.at[calculated_x, calculated_y + y_variable] == "0":
-                                                    print("CCCC223")
-                                                    break
-                                            y_variable -= 1
-                                        if (calculated_y + y_variable) not in range(0, 8):
-                                            
-                                            print("www123")
-                                            calculated_x = 0
-                                            calculated_y = 0
-                                            break
-                                    # else:
-                                    #     break
-                                    elif (calculated_y + y_variable)in range(0, 8):            
-                                        if df.at[calculated_x, calculated_y + y_variable] == "0":
-                                            print("znaleziony69")
-                                            mf.at[calculated_x, calculated_y + y_variable] == "9"
-                                            break
-                                        
-                                    
-                                elif calculated_y == 0:
-                                    print("elif")
-                                    print(calculated_x, calculated_y)
-                                    mf.at[calculated_x, calculated_y] = "1"
-                                    break
-                                else:
-                                    break
-                                
-                                
-                            elif x!=0: 
-                                print("x!=0")
-                                if df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                    mf.at[calculated_x, calculated_y] = "1"
-                                    print("kkkkkkkkkkkkkkkkkkkkkkkkkkkk")
-                                    break
-
-
-                                if (calculated_x + x_variable) in range(0,8) :
-                                    print("hhhhhhhhh")      
-                                    if df.at[calculated_x + x_variable, calculated_y] == "0":
-                                        mf.at[calculated_x, calculated_y] = "1"
-                                        if df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                            print("princik")
-                                        mf.at[calculated_x + x_variable, calculated_y] = "1"
-                                        print("movelist1x")
-                                        print(mf)
-                                        if (calculated_x + x_variable) > piece_x_coord and df.at[calculated_x + x_variable, calculated_y] == "0":
-                                            x_variable+=1
-                                            print("fff")
-                                            if (calculated_x + x_variable) in range(0,8):
-                                                if df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                                    print("DDDD")
-                                                elif df.at[calculated_x + x_variable, calculated_y] == "0":
-                                                    print("DDDD22")
-                                                    break
-                                        elif (calculated_x + x_variable) < piece_x_coord and df.at[calculated_x + x_variable, calculated_y] == "0":
-                                            x_variable -= 1
-                                            print("ffff") 
-                                        if (calculated_x + x_variable) not in range(0, 8):                                      
-                                            print("www2")
-                                            calculated_x = 0
-                                            calculated_y = 0
-                                            break
-
-
-                                    elif df.at[calculated_x, calculated_y] == "0" and calculated_x in range(0, 8):
-                                        if df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                            print("znaleziony99")
-                                        print("mmmmmmmm")
-                                        mf.at[calculated_x, calculated_y] = "1"
-                                        # print('HHHe muje2')
-                                        print("movelist0x")
-                                        print(mf)
-                                        if calculated_x in range(0,8):
-                                            print("kkkkkkkkk")
-                                            print(calculated_x, calculated_y)
-                                        if (calculated_x + x_variable) > piece_x_coord:
-                                            print("ggg")
-                                            if (calculated_x + x_variable) in range(0,8):
-                                                if df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                                    print("HHH")
-                                                    mf.at[calculated_x + x_variable, calculated_y] = "1"
-                                                elif df.at[calculated_x + x_variable, calculated_y] == "0":
-                                                    print("HHH22")
-                                                    break
-                                            x_variable+=1
-                                            
-                                            
-                                        elif (calculated_x + x_variable) < piece_x_coord:
-                                            print(calculated_x + x_variable, calculated_y)
-                                            if (calculated_x + x_variable) in range(0,8):
-                                                print(calculated_x + x_variable, calculated_y)
-                                                if df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                                    print("HHHkkk")
-                                                    mf.at[calculated_x + x_variable, calculated_y] = "1"
-                                                elif df.at[calculated_x + x_variable, calculated_y] == "0":
-                                                    print("HHH22")
-                                                    break
-                                            print("gggg")
-                                            x_variable -= 1
-                                            if (calculated_x + x_variable) in range(0,8):
-                                                print(calculated_x + x_variable, calculated_y)
-                                                if df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_pawn") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_rook") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_knight") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_bishop") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_king") or df.at[calculated_x + x_variable, calculated_y] == getattr(pieces_class.Pieces(), f"{next_turn}_queen"):
-                                                    mf.at[calculated_x + x_variable, calculated_y] = "1"
-                                                    print("HHH")
-                                                elif df.at[calculated_x + x_variable, calculated_y] == "0":
-                                                    print("HHH222")
-                                                    mf.at[calculated_x + x_variable, calculated_y] == "1"
-                                                    break
-                                            
+            if df.at[field_x_coord, field_y_coord] == "1":
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                df.at[piece_x_coord, piece_y_coord] = "0"
+                print(df)
+                MOVE="SELECT_PIECE"
+                TURN = next_turn
+            elif TURN == "white" and ((field_y_coord * 105, field_x_coord * 105) in pieces.black[0] or (field_y_coord * 105, field_x_coord * 105) in pieces.black[1]):
+                if (field_x_coord - piece_x_coord >= 1 and field_y_coord - piece_y_coord == 0) or (field_x_coord - piece_x_coord <= -1 and field_y_coord - piece_y_coord == 0) or (field_y_coord - piece_y_coord >= 1 and field_x_coord - piece_x_coord == 0) or (field_y_coord - piece_y_coord <= -1 and field_x_coord - piece_x_coord == 0):
+                    df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                    df.at[piece_x_coord, piece_y_coord] = "0"
+                    print(df)
+                    MOVE="SELECT_PIECE"
+                    TURN = next_turn
+            elif TURN == "black" and ((field_y_coord * 105, field_x_coord * 105) in pieces.white[0] or (field_y_coord * 105, field_x_coord * 105) in pieces.white[1]):
+                if (field_x_coord - piece_x_coord == 1 and field_y_coord - piece_y_coord == 0) or (field_x_coord - piece_x_coord == -1 and field_y_coord - piece_y_coord == 0) or (field_y_coord - piece_y_coord == 1 and field_x_coord - piece_x_coord == 0) or (field_y_coord - piece_y_coord == -1 and field_x_coord - piece_x_coord == 0):
+                    df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                    df.at[piece_x_coord, piece_y_coord] = "0"
+                    print(df)
+                    MOVE="SELECT_PIECE"
+                    TURN = next_turn
                 
-                                        if (calculated_x + x_variable) not in range(0, 8):
-                                            next_move
-                                            print("www156")
-                                            calculated_x = 0
-                                            calculated_y = 0
-                                            break    
-                                        
-                                        
-                                    elif (calculated_x + x_variable)in range(0, 8):
-                                        if df.at[calculated_x + x_variable, calculated_y] == "0":
-                                            print("znaleziony2137")
-                                            mf.at[calculated_x + x_variable, calculated_y] == "9"
-                                            break
-                                        
-                                        
-                                elif calculated_x == 0:
-                                    print("elifffff")
-                                    print(calculated_x, calculated_y)
-                                    mf.at[calculated_x, calculated_y] = "1"
-                                    break
-                                else:
-                                    break
                                 
-                        print(mf)
-                        print("movelist2")
-                    else:
-                        print("movelist3")
-                        print(mf)
-
-                print(" NIE DZIALA if calculated_y in range(0, 8) and calculated_x in range(0, 8):")
-                if i==3:
-                    print(mf)
-                    if mf.at[field_x_coord,field_y_coord] == "1":
-                        df.at[field_x_coord,field_y_coord] = df.at[piece_x_coord, piece_y_coord]
-                        df.at[piece_x_coord, piece_y_coord] = "0"
-                        print("rooki")
-                        print(mf)
-                        print(df)
-                        
-                        MOVE="SELECT_PIECE"
-                        TURN = next_turn
-
+    for i in range(8):
+        for j in range(8):
+            if df.at[i, j] == "1":
+                df.at[i, j] = "0"
+        
 
 def winner_check(white, black):
     running = True

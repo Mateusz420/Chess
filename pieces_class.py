@@ -73,10 +73,8 @@ class Pieces:
                                 if (field_y_coord * 105, field_x_coord * 105) == self.black[x][y]:
                                     self.black[x][y] = (1000, 1000)
                                     self.white[i][j] = (field_y_coord * 105, field_x_coord * 105)
-                                    print("true1")
                     elif (piece_y_coord * 105, piece_x_coord * 105) == self.white[i][j] and df.at[field_x_coord, field_y_coord] != "0" and (field_y_coord * 105, field_x_coord * 105) not in self.white[0] and (field_y_coord * 105, field_x_coord * 105) not in self.white[1]:
                         self.white[i][j] = (field_y_coord * 105, field_x_coord * 105)
-                        print("true2")
         
         # Black Pieces
         if df.at[piece_x_coord, piece_y_coord] == "0":
@@ -88,10 +86,8 @@ class Pieces:
                                 if (field_y_coord * 105, field_x_coord * 105) == self.white[x][y]:
                                     self.white[x][y] = (1000, 1000)
                                     self.black[i][j] = (field_y_coord * 105, field_x_coord * 105)
-                                    print("true3")
                     elif (piece_y_coord * 105, piece_x_coord * 105) == self.black[i][j] and df.at[field_x_coord, field_y_coord] != "0" and (field_y_coord * 105, field_x_coord * 105) not in self.black[0] and (field_y_coord * 105, field_x_coord * 105) not in self.black[1]:
                         self.black[i][j] = (field_y_coord * 105, field_x_coord * 105)
-                        print("true4")
 
 
                 
