@@ -282,6 +282,7 @@ def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     global TURN
     MOVE="SELECT_PIECE"
     king_color = TURN+"_king"
+    rook_color = TURN+"_rook"
     
     if TURN == "white":
         next_turn = "black"
@@ -290,12 +291,33 @@ def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     
     print("king_move")
     print(king_color)
+    print(field_x_coord,field_y_coord)
     if df.at[piece_x_coord, piece_y_coord] == getattr(pieces_class.Pieces(), king_color):
         if (TURN == "white" and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[1]) or (
             TURN == "black" and  (field_y_coord * 105, field_x_coord * 105) not in pieces.black[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.black[1]):
             if (piece_x_coord - field_x_coord == 1 or piece_x_coord - field_x_coord == -1 or piece_y_coord - field_y_coord == 1 or piece_y_coord - field_y_coord == -1) and (-1 <= piece_x_coord - field_x_coord <= 1 and -1 <= piece_y_coord - field_y_coord <= 1):
                 df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
                 df.at[piece_x_coord, piece_y_coord] = "0"
+                print(df)
+                MOVE="SELECT_PIECE"
+                TURN = next_turn
+                
+            #short castle
+            elif field_x_coord == piece_x_coord and field_y_coord == 6 and df.at[piece_x_coord,5] == "0" and df.at[piece_x_coord,6] == "0" and df.at[piece_x_coord,7] == getattr(pieces_class.Pieces(), rook_color):
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                df.at[piece_x_coord, piece_y_coord] = "0"
+                df.at[piece_x_coord,5] = df.at[piece_x_coord,7]
+                df.at[piece_x_coord,7] = "0"
+                print(df)
+                MOVE="SELECT_PIECE"
+                TURN = next_turn
+                
+            #long castle
+            elif field_x_coord == piece_x_coord and field_y_coord == 2 and df.at[piece_x_coord,3] == "0" and df.at[piece_x_coord,2] == "0" and df.at[piece_x_coord,1] == "0" and df.at[piece_x_coord,0] == getattr(pieces_class.Pieces(), rook_color):
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                df.at[piece_x_coord, piece_y_coord] = "0"
+                df.at[piece_x_coord,3] = df.at[piece_x_coord,0]
+                df.at[piece_x_coord,0] = "0"
                 print(df)
                 MOVE="SELECT_PIECE"
                 TURN = next_turn
