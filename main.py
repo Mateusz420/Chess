@@ -78,19 +78,21 @@ def piece_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
         print("knight")
         knight_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
         
-    
     elif (selected_piece == pieces_class.Pieces().white_rook or selected_piece == pieces_class.Pieces().black_rook):
         print("rook")
         rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
     
-    # elif (selected_piece == "0"):
-    #     print("0")
-    #     MOVE = "SELECT_PIECE"
+    elif (selected_piece == pieces_class.Pieces().white_bishop or selected_piece == pieces_class.Pieces().black_bishop):
+        print("bishop")
+        bishop_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
+    
+    elif (selected_piece == pieces_class.Pieces().white_queen or selected_piece == pieces_class.Pieces().black_queen):
+        print("queen")
+        queen_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
         
     elif (selected_piece == pieces_class.Pieces().white_king or selected_piece == pieces_class.Pieces().black_king):
-        print("knight")
+        print("king")
         king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
-    
     
     else:
         print("0")
@@ -277,6 +279,306 @@ def knight_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     else:
         MOVE="SELECT_PIECE"
 
+def rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
+    global MOVE
+    global TURN
+    MOVE="SELECT_PIECE"
+    rook_color = TURN+"_rook"
+    
+    if TURN == "white":
+        next_turn = "black"
+    elif TURN == "black":
+        next_turn = "white"
+    
+    print("rook_move")
+    print(rook_color)
+    
+    taking_x_plus = None
+    taking_x_minus = None
+    taking_y_plus = None
+    taking_y_minus = None
+    
+    for i in range(4):
+        if i == 0:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord + j <= 7 and df.at[piece_x_coord + j, piece_y_coord] == "0":
+                    df.at[piece_x_coord + j, piece_y_coord] = "1"
+                    taking_x_plus = [piece_y_coord, piece_x_coord + j]
+                elif 0 <= piece_x_coord + j <= 7 and df.at[piece_x_coord + j, piece_y_coord] != "0":
+                    taking_x_plus = [piece_y_coord, piece_x_coord + j]
+                    break
+                else:
+                    break
+        elif i == 1:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord - j <= 7 and df.at[piece_x_coord - j, piece_y_coord] == "0":
+                    df.at[piece_x_coord - j, piece_y_coord] = "1"
+                    taking_x_minus = [piece_y_coord, piece_x_coord - j]
+                elif 0 <= piece_x_coord - j <= 7 and df.at[piece_x_coord - j, piece_y_coord] != "0":
+                    taking_x_minus = [piece_y_coord, piece_x_coord - j]
+                    break
+                else:
+                    break
+        elif i == 2:
+            for j in range(1, 8):
+                if 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord, piece_y_coord + j] == "0":
+                    df.at[piece_x_coord, piece_y_coord + j] = "1"
+                    taking_y_plus = [piece_y_coord + j, piece_x_coord]
+                elif 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord, piece_y_coord + j] != "0":
+                    taking_y_plus = [piece_y_coord + j, piece_x_coord]
+                    break
+                else:
+                    break
+        elif i == 3:
+            for j in range(1, 8):
+                if 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord, piece_y_coord - j] == "0":
+                    df.at[piece_x_coord, piece_y_coord - j] = "1"
+                    taking_y_minus = [piece_y_coord - j, piece_x_coord]
+                elif 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord, piece_y_coord - j] != "0":
+                    taking_y_minus = [piece_y_coord - j, piece_x_coord]
+                    break
+                else:
+                    break
+                
+    if df.at[piece_x_coord, piece_y_coord] == getattr(pieces_class.Pieces(), rook_color):
+        if (TURN == "white" and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[1]) or (
+            TURN == "black" and  (field_y_coord * 105, field_x_coord * 105) not in pieces.black[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.black[1]):  
+            if df.at[field_x_coord, field_y_coord] == "1" or [field_y_coord, field_x_coord] == taking_x_plus or [field_y_coord, field_x_coord] == taking_x_minus or [field_y_coord, field_x_coord] == taking_y_plus or [field_y_coord, field_x_coord] == taking_y_minus:  
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                df.at[piece_x_coord, piece_y_coord] = "0"
+                print(df)
+                MOVE="SELECT_PIECE"
+                TURN = next_turn
+                            
+    for i in range(8):
+        for j in range(8):
+            if df.at[i, j] == "1":
+                df.at[i, j] = "0"
+        
+def bishop_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
+    global MOVE
+    global TURN
+    MOVE="SELECT_PIECE"
+    bishop_color = TURN+"_bishop"
+    
+    if TURN == "white":
+        next_turn = "black"
+    elif TURN == "black":
+        next_turn = "white"
+    
+    print("bishop_move")
+    print(bishop_color)
+    
+    taking_x_plus = None
+    taking_x_minus = None
+    taking_y_plus = None
+    taking_y_minus = None
+    
+    for i in range(4):
+        if i == 0:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord + j <= 7 and 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord + j, piece_y_coord + j] == "0":
+                    df.at[piece_x_coord + j, piece_y_coord + j] = "1"
+                    taking_x_plus = [piece_y_coord + j, piece_x_coord + j]
+                elif 0 <= piece_x_coord + j <= 7 and 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord + j, piece_y_coord + j] != "0":
+                    taking_x_plus = [piece_y_coord + j, piece_x_coord + j]
+                    break
+                else:
+                    break
+        elif i == 1:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord + j <= 7 and 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord + j, piece_y_coord - j] == "0":
+                    df.at[piece_x_coord + j, piece_y_coord - j] = "1"
+                    taking_x_minus = [piece_y_coord - j, piece_x_coord + j]
+                elif 0 <= piece_x_coord + j <= 7 and 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord + j, piece_y_coord - j] != "0":
+                    taking_x_minus = [piece_y_coord - j, piece_x_coord + j]
+                    break
+                else:
+                    break
+        elif i == 2:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord - j <= 7 and 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord - j, piece_y_coord + j] == "0":
+                    df.at[piece_x_coord - j, piece_y_coord + j] = "1"
+                    taking_y_plus = [piece_y_coord + j, piece_x_coord - j]
+                elif 0 <= piece_x_coord - j <= 7 and 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord - j, piece_y_coord + j] != "0":
+                    taking_y_plus = [piece_y_coord + j, piece_x_coord - j]
+                    break
+                else:
+                    break
+        elif i == 3:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord - j <= 7 and 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord - j, piece_y_coord - j] == "0":
+                    df.at[piece_x_coord - j, piece_y_coord - j] = "1"
+                    taking_y_minus = [piece_y_coord - j, piece_x_coord - j]
+                elif 0 <= piece_x_coord - j <= 7 and 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord - j, piece_y_coord - j] != "0":
+                    taking_y_minus = [piece_y_coord - j, piece_x_coord - j]
+                    break
+                else:
+                    break
+    
+    if df.at[piece_x_coord, piece_y_coord] == getattr(pieces_class.Pieces(), bishop_color):
+        if (TURN == "white" and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[1]) or (
+            TURN == "black" and  (field_y_coord * 105, field_x_coord * 105) not in pieces.black[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.black[1]):  
+            if df.at[field_x_coord, field_y_coord] == "1" or [field_y_coord, field_x_coord] == taking_x_plus or [field_y_coord, field_x_coord] == taking_x_minus or [field_y_coord, field_x_coord] == taking_y_plus or [field_y_coord, field_x_coord] == taking_y_minus:  
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                df.at[piece_x_coord, piece_y_coord] = "0"
+                print(df)
+                MOVE="SELECT_PIECE"
+                TURN = next_turn
+                            
+    for i in range(8):
+        for j in range(8):
+            if df.at[i, j] == "1":
+                df.at[i, j] = "0"
+                
+def queen_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
+    global MOVE
+    global TURN
+    MOVE="SELECT_PIECE"
+    queen_color = TURN+"_queen"
+    
+    if TURN == "white":
+        next_turn = "black"
+    elif TURN == "black":
+        next_turn = "white"
+    
+    print("queen_move")
+    print(queen_color)
+    
+    taking_x_plus_stright = None
+    taking_x_minus_stright = None
+    taking_y_plus_stright = None
+    taking_y_minus_stright = None
+    
+    taking_x_plus_diagonally = None
+    taking_x_minus_diagonally = None
+    taking_y_plus_diagonally = None
+    taking_y_minus_diagonally = None
+    
+    for i in range(4):
+        if i == 0:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord + j <= 7 and df.at[piece_x_coord + j, piece_y_coord] == "0":
+                    df.at[piece_x_coord + j, piece_y_coord] = "1"
+                    taking_x_plus_stright = [piece_y_coord, piece_x_coord + j]
+                elif 0 <= piece_x_coord + j <= 7 and df.at[piece_x_coord + j, piece_y_coord] != "0":
+                    taking_x_plus_stright = [piece_y_coord, piece_x_coord + j]
+                    break
+                else:
+                    break
+        elif i == 1:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord - j <= 7 and df.at[piece_x_coord - j, piece_y_coord] == "0":
+                    df.at[piece_x_coord - j, piece_y_coord] = "1"
+                    taking_x_minus_stright = [piece_y_coord, piece_x_coord - j]
+                elif 0 <= piece_x_coord - j <= 7 and df.at[piece_x_coord - j, piece_y_coord] != "0":
+                    taking_x_minus_stright = [piece_y_coord, piece_x_coord - j]
+                    break
+                else:
+                    break
+        elif i == 2:
+            for j in range(1, 8):
+                if 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord, piece_y_coord + j] == "0":
+                    df.at[piece_x_coord, piece_y_coord + j] = "1"
+                    taking_y_plus_stright = [piece_y_coord + j, piece_x_coord]
+                elif 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord, piece_y_coord + j] != "0":
+                    taking_y_plus_stright = [piece_y_coord + j, piece_x_coord]
+                    break
+                else:
+                    break
+        elif i == 3:
+            for j in range(1, 8):
+                if 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord, piece_y_coord - j] == "0":
+                    df.at[piece_x_coord, piece_y_coord - j] = "1"
+                    taking_y_minus_stright = [piece_y_coord - j, piece_x_coord]
+                elif 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord, piece_y_coord - j] != "0":
+                    taking_y_minus_stright = [piece_y_coord - j, piece_x_coord]
+                    break
+                else:
+                    break
+    
+    
+    for i in range(4):
+        if i == 0:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord + j <= 7 and 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord + j, piece_y_coord + j] == "0":
+                    df.at[piece_x_coord + j, piece_y_coord + j] = "1"
+                    taking_x_plus_diagonally = [piece_y_coord + j, piece_x_coord + j]
+                elif 0 <= piece_x_coord + j <= 7 and 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord + j, piece_y_coord + j] != "0":
+                    taking_x_plus_diagonally = [piece_y_coord + j, piece_x_coord + j]
+                    break
+                else:
+                    break
+        elif i == 1:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord + j <= 7 and 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord + j, piece_y_coord - j] == "0":
+                    df.at[piece_x_coord + j, piece_y_coord - j] = "1"
+                    taking_x_minus_diagonally = [piece_y_coord - j, piece_x_coord + j]
+                elif 0 <= piece_x_coord + j <= 7 and 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord + j, piece_y_coord - j] != "0":
+                    taking_x_minus_diagonally = [piece_y_coord - j, piece_x_coord + j]
+                    break
+                else:
+                    break
+        elif i == 2:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord - j <= 7 and 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord - j, piece_y_coord + j] == "0":
+                    df.at[piece_x_coord - j, piece_y_coord + j] = "1"
+                    taking_y_plus_diagonally = [piece_y_coord + j, piece_x_coord - j]
+                elif 0 <= piece_x_coord - j <= 7 and 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord - j, piece_y_coord + j] != "0":
+                    taking_y_plus_diagonally = [piece_y_coord + j, piece_x_coord - j]
+                    break
+                else:
+                    break
+        elif i == 3:
+            for j in range(1, 8):
+                if 0 <= piece_x_coord - j <= 7 and 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord - j, piece_y_coord - j] == "0":
+                    df.at[piece_x_coord - j, piece_y_coord - j] = "1"
+                    taking_y_minus_diagonally = [piece_y_coord - j, piece_x_coord - j]
+                elif 0 <= piece_x_coord - j <= 7 and 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord - j, piece_y_coord - j] != "0":
+                    taking_y_minus_diagonally = [piece_y_coord - j, piece_x_coord - j]
+                    break
+                else:
+                    break
+
+    if df.at[piece_x_coord, piece_y_coord] == getattr(pieces_class.Pieces(), queen_color):
+        if (TURN == "white" and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[1]) or (
+            TURN == "black" and  (field_y_coord * 105, field_x_coord * 105) not in pieces.black[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.black[1]):  
+            if df.at[field_x_coord, field_y_coord] == "1":  
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                df.at[piece_x_coord, piece_y_coord] = "0"
+                print(df)
+                MOVE="SELECT_PIECE"
+                TURN = next_turn
+            elif [field_y_coord, field_x_coord] == taking_x_plus_stright or [field_y_coord, field_x_coord] == taking_x_minus_stright or [field_y_coord, field_x_coord] == taking_y_plus_stright or [field_y_coord, field_x_coord] == taking_y_minus_stright:
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                df.at[piece_x_coord, piece_y_coord] = "0"
+                print(df)
+                MOVE="SELECT_PIECE"
+                TURN = next_turn
+            elif [field_y_coord, field_x_coord] == taking_x_plus_diagonally or [field_y_coord, field_x_coord] == taking_x_minus_diagonally or [field_y_coord, field_x_coord] == taking_y_plus_diagonally or [field_y_coord, field_x_coord] == taking_y_minus_diagonally:
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                df.at[piece_x_coord, piece_y_coord] = "0"
+                print(df)
+                MOVE="SELECT_PIECE"
+                TURN = next_turn
+                    
+    for i in range(8):
+        for j in range(8):
+            if df.at[i, j] == "1":
+                df.at[i, j] = "0"                
+
+def winner_check(white, black):
+    running = True
+    
+    if white[1][4] == (1000, 1000):
+        print("Black Wins!")
+        running = False
+    elif black[1][4] == (1000, 1000):
+        print("White Wins!")
+        running = False
+        
+    return running
+
 def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     global MOVE
     global TURN
@@ -322,109 +624,9 @@ def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                 MOVE="SELECT_PIECE"
                 TURN = next_turn
 
-def rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
-    global MOVE
-    global TURN
-    MOVE="SELECT_PIECE"
-    rook_color = TURN+"_rook"
-    
-    if TURN == "white":
-        next_turn = "black"
-    elif TURN == "black":
-        next_turn = "white"
-    
-    print("rook_move")
-    print(rook_color)
-    
-    for i in range(4):
-        if i == 0:
-            for j in range(1, 8):
-                if 0 <= piece_x_coord + j <= 7 and df.at[piece_x_coord + j, piece_y_coord] == "0":
-                    df.at[piece_x_coord + j, piece_y_coord] = "1"
-                else:
-                    break
-        elif i == 1:
-            for j in range(1, 8):
-                if 0 <= piece_x_coord - j <= 7 and df.at[piece_x_coord - j, piece_y_coord] == "0":
-                    df.at[piece_x_coord - j, piece_y_coord] = "1"
-                else:
-                    break
-        elif i == 2:
-            for j in range(1, 8):
-                if 0 <= piece_y_coord + j <= 7 and df.at[piece_x_coord , piece_y_coord + j] == "0":
-                    df.at[piece_x_coord, piece_y_coord + j] = "1"
-                else:
-                    break
-        elif i == 3:
-            for j in range(1, 8):
-                if 0 <= piece_y_coord - j <= 7 and df.at[piece_x_coord, piece_y_coord - j] == "0":
-                    df.at[piece_x_coord, piece_y_coord - j] = "1"
-                else:
-                    break
-           
-    if df.at[piece_x_coord, piece_y_coord] == getattr(pieces_class.Pieces(), rook_color):
-        if (TURN == "white" and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[1]) or (
-            TURN == "black" and  (field_y_coord * 105, field_x_coord * 105) not in pieces.black[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.black[1]):
-            if df.at[field_x_coord, field_y_coord] == "1":
-                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
-                df.at[piece_x_coord, piece_y_coord] = "0"
-                print(df)
-                MOVE="SELECT_PIECE"
-                TURN = next_turn
-            elif TURN == "white" and ((field_y_coord * 105, field_x_coord * 105) in pieces.black[0] or (field_y_coord * 105, field_x_coord * 105) in pieces.black[1]):
-                if (field_x_coord - piece_x_coord >= 1 and field_y_coord - piece_y_coord == 0) or (field_x_coord - piece_x_coord <= -1 and field_y_coord - piece_y_coord == 0) or (field_y_coord - piece_y_coord >= 1 and field_x_coord - piece_x_coord == 0) or (field_y_coord - piece_y_coord <= -1 and field_x_coord - piece_x_coord == 0):
-                    df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
-                    df.at[piece_x_coord, piece_y_coord] = "0"
-                    print(df)
-                    MOVE="SELECT_PIECE"
-                    TURN = next_turn
-            elif TURN == "black" and ((field_y_coord * 105, field_x_coord * 105) in pieces.white[0] or (field_y_coord * 105, field_x_coord * 105) in pieces.white[1]):
-                if (field_x_coord - piece_x_coord == 1 and field_y_coord - piece_y_coord == 0) or (field_x_coord - piece_x_coord == -1 and field_y_coord - piece_y_coord == 0) or (field_y_coord - piece_y_coord == 1 and field_x_coord - piece_x_coord == 0) or (field_y_coord - piece_y_coord == -1 and field_x_coord - piece_x_coord == 0):
-                    df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
-                    df.at[piece_x_coord, piece_y_coord] = "0"
-                    print(df)
-                    MOVE="SELECT_PIECE"
-                    TURN = next_turn
-                
-                                
-    for i in range(8):
-        for j in range(8):
-            if df.at[i, j] == "1":
-                df.at[i, j] = "0"
-        
-
-def winner_check(white, black):
-    running = True
-    #for i in range(8):
-        #for j in range(8):
-            #if df.at[i, j] == getattr(pieces_class.Pieces(), "white_king"):
-                #white_king_loc = df.at[i, j]
-                #break
-            #else:
-                #white_king_loc = None
-    
-    #for i in range(8):
-        #for j in range(8):
-            #if df.at[i, j] == getattr(pieces_class.Pieces(), "black_king"):
-                #black_king_loc = df.at[i, j]
-                #break
-            #else:
-                #black_king_loc = None
-    
-    if white[1][4] == (1000, 1000):
-        print("Black Wins!")
-        running = False
-    elif black[1][4] == (1000, 1000):
-        print("White Wins!")
-        running = False
-        
-    return running
-
 df = pandas.DataFrame(pieces_class.Pieces().starting_chess_board_data)
-mf = pandas.DataFrame(pieces_class.Pieces().move_chess_board_data)
 print("wybierz figure")
 print(df)
-
 
 # game loop
 running = True

@@ -29,15 +29,6 @@ class Pieces:
                                  5: [black_bishop, black_pawn, "0", "0", "0", "0", white_pawn, white_bishop],
                                  6: [black_knight, black_pawn, "0", "0", "0", "0", white_pawn, white_knight],
                                  7: [black_rook, black_pawn, "0", "0", "0", "0", white_pawn, white_rook]}
-
-    move_chess_board_data =    {0: ["0", "0", "0", "0", "0", "0", "0", "0"],
-                                1: ["0", "0", "0", "0", "0", "0", "0", "0"],
-                                2: ["0", "0", "0", "0", "0", "0", "0", "0"],
-                                3: ["0", "0", "0", "0", "0", "0", "0", "0"],
-                                4: ["0", "0", "0", "0", "0", "0", "0", "0"],
-                                5: ["0", "0", "0", "0", "0", "0", "0", "0"],
-                                6: ["0", "0", "0", "0", "0", "0", "0", "0"],
-                                7: ["0", "0", "0", "0", "0", "0", "0", "0"]}
     
     def pieces_draw(self, screen):
         for i in range(8):
@@ -62,7 +53,7 @@ class Pieces:
         screen.blit(self.black_king, self.black[1][4])
 
     def pieces_location(self, df, TURN, piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
-        # Bug in taking pieces gotta fix it
+        
         # White Pieces
         if df.at[piece_x_coord, piece_y_coord] == "0":
             for i in range(2):
