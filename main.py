@@ -610,16 +610,24 @@ def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                 df.at[piece_x_coord, piece_y_coord] = "0"
                 df.at[piece_x_coord,5] = df.at[piece_x_coord,7]
                 df.at[piece_x_coord,7] = "0"
+                if king_color == "white_king":
+                    pieces.white[1][7] = (525, 735)
+                if king_color == "black_king":
+                    pieces.black[1][7] = (525, 0)
                 print(df)
                 MOVE="SELECT_PIECE"
                 TURN = next_turn
                 
             #long castle
-            elif field_x_coord == piece_x_coord and field_y_coord == 2 and df.at[piece_x_coord,3] == "0" and df.at[piece_x_coord,2] == "0" and df.at[piece_x_coord,1] == "0" and df.at[piece_x_coord,0] == getattr(pieces_class.Pieces(), rook_color):
+            elif field_x_coord == piece_x_coord and field_y_coord == 1 and df.at[piece_x_coord,3] == "0" and df.at[piece_x_coord,2] == "0" and df.at[piece_x_coord,1] == "0" and df.at[piece_x_coord,0] == getattr(pieces_class.Pieces(), rook_color):
                 df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
                 df.at[piece_x_coord, piece_y_coord] = "0"
-                df.at[piece_x_coord,3] = df.at[piece_x_coord,0]
+                df.at[piece_x_coord,2] = df.at[piece_x_coord,0]
                 df.at[piece_x_coord,0] = "0"
+                if king_color == "white_king":
+                    pieces.white[1][0] = (210, 735)
+                if king_color == "black_king":
+                    pieces.black[1][0] = (210, 0)
                 print(df)
                 MOVE="SELECT_PIECE"
                 TURN = next_turn
