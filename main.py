@@ -1,6 +1,7 @@
 import pygame
 import pieces_class
 import pandas
+import datetime
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -45,18 +46,21 @@ global MOVE
 MOVE ="SELECT_PIECE"
 global TURN
 TURN = "white"
-# current piece and coords
-# global selected_piece
-# selected_piece = ""
-# global selected_field
-# selected_field = ""
-# print(selected_piece)
-# global selected_x_coord
-# selected_x_coord = ""
-# print(selected_x_coord)
-# global selected_y_coord
-# selected_y_coord = ""
-# print(selected_y_coord)
+notation_list = []
+
+
+
+def chess_notation(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord, piece=""):
+    x = [8,7,6,5,4,3,2,1]
+    x_piece = x[piece_x_coord]
+    y_piece = chr(97+piece_y_coord)
+    x_field = x[field_x_coord]
+    y_field= chr(97+field_y_coord)
+    
+    notation_list.append(f"{piece}{y_piece}{x_piece}-{y_field}{x_field}")
+    print(notation_list)
+
+
 
 
 def piece_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
@@ -111,6 +115,11 @@ def white_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     print("white_pawn_move")
     print(pawn_color)
     
+    if TURN == "white":
+        next_turn = "black"
+    elif TURN == "black":
+        next_turn = "white"
+        
     if df.at[piece_x_coord, piece_y_coord] == getattr(pieces_class.Pieces(), pawn_color):
         if (field_y_coord * 105, field_x_coord * 105) not in pieces.white[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.white[1]:
             #bicie
@@ -164,6 +173,9 @@ def white_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
         else:
             MOVE="SELECT_PIECE"
             
+        if TURN == next_turn:
+            chess_notation(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
+            
 
 def black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     ### PION PO DOJŚCIU DO KOŃCA MOŻE PRZESKAKIWAĆ NA KOLEJNE KOLUMNY, BUG, KTÓRY PO DODANIU AWANSU PRZESTANIE DZIAŁAĆ
@@ -177,6 +189,11 @@ def black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     print("black_pawn_move")
     print(pawn_color)
     
+    if TURN == "black":
+        next_turn = "white"
+    elif TURN == "white":
+        next_turn = "black"
+    
     if df.at[piece_x_coord, piece_y_coord] == getattr(pieces_class.Pieces(), pawn_color):
         if (field_y_coord * 105, field_x_coord * 105) not in pieces.black[0] and (field_y_coord * 105, field_x_coord * 105) not in pieces.black[1]:
             #bicie
@@ -186,7 +203,7 @@ def black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                 df.at[piece_x_coord, piece_y_coord] = "0"
                 print(df)
                 MOVE="SELECT_PIECE"
-                TURN="white"
+                TURN=next_turn
                 
             #ruch o 2 pola
             elif piece_y_coord == field_y_coord and piece_x_coord == 1 and field_x_coord == 3:
@@ -196,7 +213,7 @@ def black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                     df.at[piece_x_coord, piece_y_coord] = "0"
                     print(df)
                     MOVE="SELECT_PIECE"
-                    TURN="white"
+                    TURN=next_turn
                 
             #ruch o 1 pole
             elif piece_y_coord == field_y_coord and piece_x_coord - field_x_coord == -1:
@@ -206,11 +223,14 @@ def black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                     print("black_pawn_rucho1")
                     print(df)
                     MOVE="SELECT_PIECE"
-                    TURN="white"
+                    TURN=next_turn
                 else:
                     MOVE="SELECT_PIECE"
         else:
             MOVE="SELECT_PIECE"
+        
+        if TURN == next_turn:
+            chess_notation(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord)
 
 
 def knight_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
@@ -222,7 +242,6 @@ def knight_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     print("horse_move")
     print(knight_color)
     
-    # next turn
     if TURN == "white":
         next_turn = "black"
     elif TURN == "black":
@@ -297,6 +316,9 @@ def knight_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     
     else:
         MOVE="SELECT_PIECE"
+        
+    if TURN == next_turn:
+        chess_notation(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord, "N")
 
 def rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     global MOVE
@@ -373,6 +395,9 @@ def rook_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
         for j in range(8):
             if df.at[i, j] == "1":
                 df.at[i, j] = "0"
+                
+    if TURN == next_turn:
+            chess_notation(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord, "R")
         
 def bishop_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     global MOVE
@@ -449,6 +474,9 @@ def bishop_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
         for j in range(8):
             if df.at[i, j] == "1":
                 df.at[i, j] = "0"
+                
+    if TURN == next_turn:
+        chess_notation(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord, "B")
                 
 def queen_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     global MOVE
@@ -584,7 +612,10 @@ def queen_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     for i in range(8):
         for j in range(8):
             if df.at[i, j] == "1":
-                df.at[i, j] = "0"                
+                df.at[i, j] = "0"  
+                
+    if TURN == next_turn:
+        chess_notation(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord, "Q")              
 
 def winner_check(white, black):
     running = True
@@ -604,6 +635,7 @@ def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
     MOVE="SELECT_PIECE"
     king_color = TURN+"_king"
     rook_color = TURN+"_rook"
+    CASTLE = False
     
     if TURN == "white":
         next_turn = "black"
@@ -636,6 +668,10 @@ def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                 print(df)
                 MOVE="SELECT_PIECE"
                 TURN = next_turn
+                CASTLE = True
+                notation_list.append("O-O")
+                print(notation_list)
+                
                 
             #long castle
             elif field_x_coord == piece_x_coord and field_y_coord == 2 and df.at[piece_x_coord,3] == "0" and df.at[piece_x_coord,2] == "0" and df.at[piece_x_coord,1] == "0" and df.at[piece_x_coord,0] == getattr(pieces_class.Pieces(), rook_color):
@@ -650,6 +686,12 @@ def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                 print(df)
                 MOVE="SELECT_PIECE"
                 TURN = next_turn
+                CASTLE = True
+                notation_list.append("O-O-O")
+                print(notation_list)
+                
+    if TURN == next_turn and CASTLE == False:
+        chess_notation(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord, "K")     
 
 df = pandas.DataFrame(pieces_class.Pieces().starting_chess_board_data)
 print("wybierz figure")
@@ -662,6 +704,9 @@ while running:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            current_day = datetime.datetime.now()
+            notation_df = pandas.DataFrame(notation_list)
+            notation_df.to_csv(f"chess//chess_game_{str(current_day.strftime('%d.%m.%G_%H;%M'))}.csv", index = False)
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if(MOVE == "SELECT_PIECE"):
