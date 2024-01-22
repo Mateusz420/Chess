@@ -20,6 +20,8 @@ class Pieces:
              [(0, 735), (105, 735), (210, 735), (315, 735), (420, 735), (525, 735), (630, 735), (735, 735)]]
     black = [[(0, 105), (105, 105), (210, 105), (315, 105), (420, 105), (525, 105), (630, 105), (735, 105)],
              [(0, 0), (105, 0), (210, 0), (315, 0), (420, 0), (525, 0), (630, 0), (735, 0)]]
+    promoted_white = []
+    promoted_black = []
 
     starting_chess_board_data = {0: [black_rook, black_pawn, "0", "0", "0", "0", white_pawn, white_rook],
                                  1: [black_knight, black_pawn, "0", "0", "0", "0", white_pawn, white_knight],
@@ -51,6 +53,13 @@ class Pieces:
         screen.blit(self.white_king, self.white[1][4])
         screen.blit(self.black_queen, self.black[1][3])
         screen.blit(self.black_king, self.black[1][4])
+
+        if len(self.promoted_white) != 0:
+            for i in range(len(self.promoted_white)):
+                screen.blit(self.white_queen, self.promoted_white[i])
+        if len(self.promoted_black) != 0:
+            for i in range(len(self.promoted_black)):
+                screen.blit(self.black_queen, self.promoted_black[i])
 
     def pieces_location(self, df, TURN, piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
         

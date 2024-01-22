@@ -116,26 +116,45 @@ def white_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
             #bicie
             if piece_x_coord - field_x_coord == 1 and df.at[field_x_coord, field_y_coord] != "0" and piece_y_coord - field_y_coord == 1 or piece_y_coord - field_y_coord == -1 and df.at[field_x_coord, field_y_coord] != "0":
                 print("white_pawn_bicie")
-                df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().white_pawn
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
                 df.at[piece_x_coord, piece_y_coord] = "0"
                 print(df)
+                
+                #promotion (not working yet)
+                #if field_x_coord == 0 and df.at[field_x_coord, field_y_coord] == pieces_class.Pieces().white_pawn:
+                    #df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().white_queen
+                    #pieces.promoted_white.append((field_y_coord * 105, field_x_coord * 105))
+                    #for i in range(2):
+                        #for j in range(8):
+                            #if (piece_y_coord * 105, piece_x_coord * 105) == pieces.white[i][j]:
+                                #pieces.white[i][j] = (1000, 1000)
                 MOVE="SELECT_PIECE"
                 TURN="black"
             #ruch o 2 pola
             elif piece_y_coord == field_y_coord and piece_x_coord == 6 and field_x_coord == 4:
                 if df.at[piece_x_coord - 1, piece_y_coord] == "0":
                     print("white_pawn_rucho2")
-                    df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().white_pawn
-                    df.at[piece_x_coord, piece_y_coord] = "0"
+                    df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
+                    df.at[piece_x_coord, piece_y_coord] = "0"                 
                     print(df)
                     MOVE="SELECT_PIECE"
                     TURN="black"
-                
+
             #ruch o 1 pole
             elif piece_y_coord == field_y_coord and piece_x_coord - field_x_coord == 1:
                 if(df.at[field_x_coord, field_y_coord]) == "0":
-                    df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().white_pawn
+                    df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
                     df.at[piece_x_coord, piece_y_coord] = "0"
+                    
+                    #promotion (not working yet)
+                    #if field_x_coord == 0 and df.at[field_x_coord, field_y_coord] == pieces_class.Pieces().white_pawn:
+                        #df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().white_queen
+                        #pieces.promoted_white.append((field_y_coord * 105, field_x_coord * 105))
+                        #print(pieces.promoted_white)
+                        #for i in range(2):
+                            #for j in range(8):
+                                #if (piece_y_coord * 105, piece_x_coord * 105) == pieces.white[i][j]:
+                                    #pieces.white[i][j] = (1000, 1000)
                     print("white_pawn_rucho1")
                     print(df)
                     MOVE="SELECT_PIECE"
@@ -163,7 +182,7 @@ def black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
             #bicie
             if piece_x_coord + field_x_coord == 1 and df.at[field_x_coord, field_y_coord] != "0" and piece_y_coord - field_y_coord == 1 or piece_y_coord - field_y_coord == -1 and df.at[field_x_coord, field_y_coord] != "0":
                 print("black_pawn_bicie")
-                df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().black_pawn
+                df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
                 df.at[piece_x_coord, piece_y_coord] = "0"
                 print(df)
                 MOVE="SELECT_PIECE"
@@ -173,7 +192,7 @@ def black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
             elif piece_y_coord == field_y_coord and piece_x_coord == 1 and field_x_coord == 3:
                 if df.at[piece_x_coord + 1, piece_y_coord] == "0":
                     print("black_pawn_rucho2")
-                    df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().black_pawn
+                    df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
                     df.at[piece_x_coord, piece_y_coord] = "0"
                     print(df)
                     MOVE="SELECT_PIECE"
@@ -182,7 +201,7 @@ def black_pawn_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
             #ruch o 1 pole
             elif piece_y_coord == field_y_coord and piece_x_coord - field_x_coord == -1:
                 if(df.at[field_x_coord, field_y_coord]) == "0":
-                    df.at[field_x_coord, field_y_coord] = pieces_class.Pieces().black_pawn
+                    df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
                     df.at[piece_x_coord, piece_y_coord] = "0"
                     print("black_pawn_rucho1")
                     print(df)
@@ -619,15 +638,15 @@ def king_move(piece_x_coord, piece_y_coord, field_x_coord, field_y_coord):
                 TURN = next_turn
                 
             #long castle
-            elif field_x_coord == piece_x_coord and field_y_coord == 1 and df.at[piece_x_coord,3] == "0" and df.at[piece_x_coord,2] == "0" and df.at[piece_x_coord,1] == "0" and df.at[piece_x_coord,0] == getattr(pieces_class.Pieces(), rook_color):
+            elif field_x_coord == piece_x_coord and field_y_coord == 2 and df.at[piece_x_coord,3] == "0" and df.at[piece_x_coord,2] == "0" and df.at[piece_x_coord,1] == "0" and df.at[piece_x_coord,0] == getattr(pieces_class.Pieces(), rook_color):
                 df.at[field_x_coord, field_y_coord] = df.at[piece_x_coord, piece_y_coord]
                 df.at[piece_x_coord, piece_y_coord] = "0"
-                df.at[piece_x_coord,2] = df.at[piece_x_coord,0]
+                df.at[piece_x_coord,3] = df.at[piece_x_coord,0]
                 df.at[piece_x_coord,0] = "0"
                 if king_color == "white_king":
-                    pieces.white[1][0] = (210, 735)
+                    pieces.white[1][0] = (315, 735)
                 if king_color == "black_king":
-                    pieces.black[1][0] = (210, 0)
+                    pieces.black[1][0] = (315, 0)
                 print(df)
                 MOVE="SELECT_PIECE"
                 TURN = next_turn
