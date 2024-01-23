@@ -3,18 +3,18 @@ import pygame
 
 
 class Pieces:
-    black_pawn = pygame.image.load("chess\\pieces\\black_pawn.png")
-    black_rook = pygame.image.load("chess\\pieces\\black_rook.png")
-    black_knight = pygame.image.load("chess\\pieces\\black_knight.png")
-    black_bishop = pygame.image.load("chess\\pieces\\black_bishop.png")
-    black_king = pygame.image.load("chess\\pieces\\black_king.png")
-    black_queen = pygame.image.load("chess\\pieces\\black_queen.png")
-    white_pawn = pygame.image.load("chess\\pieces\\white_pawn.png")
-    white_rook = pygame.image.load("chess\\pieces\\white_rook.png")
-    white_knight = pygame.image.load("chess\\pieces\\white_knight.png")
-    white_bishop = pygame.image.load("chess\\pieces\\white_bishop.png")
-    white_king = pygame.image.load("chess\\pieces\\white_king.png")
-    white_queen = pygame.image.load("chess\\pieces\\white_queen.png")
+    black_pawn = pygame.image.load("pieces\\black_pawn.png")
+    black_rook = pygame.image.load("pieces\\black_rook.png")
+    black_knight = pygame.image.load("pieces\\black_knight.png")
+    black_bishop = pygame.image.load("pieces\\black_bishop.png")
+    black_king = pygame.image.load("pieces\\black_king.png")
+    black_queen = pygame.image.load("pieces\\black_queen.png")
+    white_pawn = pygame.image.load("pieces\\white_pawn.png")
+    white_rook = pygame.image.load("pieces\\white_rook.png")
+    white_knight = pygame.image.load("pieces\\white_knight.png")
+    white_bishop = pygame.image.load("pieces\\white_bishop.png")
+    white_king = pygame.image.load("pieces\\white_king.png")
+    white_queen = pygame.image.load("pieces\\white_queen.png")
     
     white = [[(0, 630), (105, 630), (210, 630), (315, 630), (420, 630), (525, 630), (630, 630), (735, 630)],
              [(0, 735), (105, 735), (210, 735), (315, 735), (420, 735), (525, 735), (630, 735), (735, 735)]]
@@ -88,6 +88,3 @@ class Pieces:
                                     self.black[i][j] = (field_y_coord * 105, field_x_coord * 105)
                     elif (piece_y_coord * 105, piece_x_coord * 105) == self.black[i][j] and df.at[field_x_coord, field_y_coord] != "0" and (field_y_coord * 105, field_x_coord * 105) not in self.black[0] and (field_y_coord * 105, field_x_coord * 105) not in self.black[1]:
                         self.black[i][j] = (field_y_coord * 105, field_x_coord * 105)
-
-
-                

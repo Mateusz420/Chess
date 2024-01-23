@@ -8,7 +8,7 @@ clock = pygame.time.Clock()
 
 # Setting up the screen
 screen = pygame.display.set_mode((840, 840))
-chess_board = pygame.image.load("chess\\chess_board.png")
+chess_board = pygame.image.load("chess_board.png")
 
 # Splitting the chess board into squares
 board_x = 0
@@ -36,7 +36,7 @@ for i in range(len(all_tiles)):
     else:
         x_coords.append(all_tiles[i])
 
-icon = pygame.image.load("chess\\pieces\\black_pawn.png")
+icon = pygame.image.load("pieces\\black_pawn.png")
 pygame.display.set_caption("Chess")
 pygame.display.set_icon(icon)
 
